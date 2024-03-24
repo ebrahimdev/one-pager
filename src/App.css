@@ -1,0 +1,93 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  color: #495057;
+  line-height: 1.6;
+  padding: 20px 0;
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+.header {
+  background: #007bff;
+  color: #ffffff;
+  padding: 30px 0;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.header h1 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.product-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.1);
+  margin-bottom: 20px;
+}
+
+.product-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.product-info h2 {
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.product-info p {
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 24px;
+  color: #ffc107;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.buy-now {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 25px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.buy-now:hover, .buy-now:focus {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 0;
+  }
+
+  .product-card {
+    padding: 15px;
+  }
+
+  .buy-now {
+    padding: 8px 20px;
+    font-size: 16px;
+  }
+}
