@@ -1,15 +1,19 @@
 from flask import Flask, request, send_from_directory, abort, jsonify
+from flask_cors import CORS
 import os
 import requests
 from bs4 import BeautifulSoup
+import logging
 
 app = Flask(__name__)
+CORS(app)
 
 product = {
-  "name": "Iphone 13 Pro Proce|iphone 14/13 Pro Max Shockproof Case With Camera Lens Protection",
-  "description": "Enhance your iPhone's durability with this shockproof case designed specifically for iPhone 13 Pro, iPhone 13 Pro Max, and iPhone 14 Pro Max models. It features robust protection against drops and impacts, while the included camera lens protector ensures your photography experience remains top-notch without compromising on lens safety.",
-  "price": "0.68C$",
-  "imageResourceUrl": "https://ae01.alicdn.com/kf/Sc1f5565c5d21488c80abb1fbb8fe70e1Y/Lens-Metal-Ring-Protector-Stand-Phone-Case-For-IPhone-15-12-13-14Pro-Max-11-Camera.jpg"
+  "productName": "Ridge Wallet How To Use",
+  "description": "Experience the ultimate in minimalist design with the Ridge Wallet. This RFID-blocking slim men's wallet is crafted from carbon fiber and aluminum, offering both durability and style. It features a mini wallet design with a money clip for ease of use and convenience, ensuring your cards and cash are secure yet easily accessible.",
+  "price": "0.67C$",
+  "imageResourceUrl": "https://ae01.alicdn.com/kf/Sc1935cf236594862a501d9a09071fbe1T/Carbon-Fiber-Slim-Aluminum-Men-Wallet-ID-Credit-Card-Holder-Mini-RFID-Wallet-Automatic-Pop-up.jpg",
+  "storeName": "ModernCarry"
 }
 
 
@@ -74,15 +78,18 @@ def get_image():
     if not os.path.exists(image_path):
         try:
             response = requests.get(resource_url, stream=True)
+            logging.info(f'Downloading image from {resource_url} to {image_path}')
             if response.status_code == 200:
                 with open(image_path, 'wb') as f:
                     for chunk in response.iter_content(1024):
                         f.write(chunk)
             else:
                 abort(404)
-        except requests.RequestException:
+        except requests.RequestException as e:
+            logging.error(f'Failed to download image from {resource_url}: {e}')
             abort(404)
-
+    
+    logging.info(f'Serving image from {image_path}')
     return send_from_directory(image_directory, filename)
 
 

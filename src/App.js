@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const base_url = 'http://localhost:5000'
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    fetch('/api/product')
+    fetch(`${base_url}/api/product`)
       .then(response => response.json())
       .then(data => setProduct(data))
       .catch(error => console.error("There was an error!", error));
@@ -20,7 +21,7 @@ function App() {
         </div>
         <div className="container">
           <div className="product-card">
-            <img src={`/image?resource_url=${encodeURIComponent(product.imageResourceUrl)}`} alt="Product" alt={product.name} className="product-image" />
+            <img src={`${base_url}/image?resource_url=${encodeURIComponent(product.imageResourceUrl)}`} alt="Product" alt={product.name} className="product-image" />
             <div className="product-info">
               <h2>{product.name}</h2>
               <p>{product.description}</p>
