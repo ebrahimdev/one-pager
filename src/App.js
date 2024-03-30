@@ -6,7 +6,7 @@ function App() {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    fetch(`${base_url}/api/product`)
+    fetch(`${base_url}/product`)
       .then(response => response.json())
       .then(data => setProduct(data))
       .catch(error => console.error("There was an error!", error));
@@ -21,7 +21,7 @@ function App() {
         </div>
         <div className="container">
           <div className="product-card">
-            <img src={`${base_url}/image?resource_url=${encodeURIComponent(product.imageResourceUrl)}`} alt="Product" alt={product.name} className="product-image" />
+            <img src={`${base_url}/product/image?resource_url=${encodeURIComponent(product.imageResourceUrl)}`} alt="Product" alt={product.name} className="product-image" />
             <div className="product-info">
               <h2>{product.name}</h2>
               <p>{product.description}</p>
