@@ -3,4 +3,4 @@ from . import bp
 
 @bp.route('/')
 def home():
-    return "Welcome to the Flask App!"
+    return "Welcome to the Flask"

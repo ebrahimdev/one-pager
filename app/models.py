@@ -8,3 +8,6 @@ class Product(db.Model):
     imageResourceUrl = db.Column(db.String(256))
     storeName = db.Column(db.String(128))
     status = db.Column(db.String(64), default='fetched')
+    
+    def __repr__(self):
+        return '<Product {}>'.format(self.name)
