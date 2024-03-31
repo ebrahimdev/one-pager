@@ -199,3 +199,6 @@ npm-debug.log
 *.vscode
 *.history
 *.io
+
+
+app/static/images

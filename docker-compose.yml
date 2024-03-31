@@ -44,11 +44,14 @@ services:
   react_app:
     build:
       context: .
-      dockerfile: Dockerfile.react
+      dockerfile: Dockerfile.react.dev  # Specify the development Dockerfile here
     ports:
-      - "3000:80"
+      - "3000:3000"  # Map port 3000 on the host to port 3000 in the container
     networks:
       - app_network
+    volumes:
+      - .:/app  # Ensure this is the path to your React source code
+      - /app/node_modules  # Use a volume to persist node_modules
 
   ngrok:
     image: wernight/ngrok
