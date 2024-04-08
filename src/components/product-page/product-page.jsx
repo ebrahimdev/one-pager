@@ -4,7 +4,7 @@ import './product-page.css';
 
 function ProductPage() {
   const { productId } = useParams();
-  const base_url = 'http://localhost:5000';
+  const base_url = 'http://localhost/api';
   const [product, setProduct] = useState({});
 
   useEffect(() => {
