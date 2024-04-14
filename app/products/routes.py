@@ -8,7 +8,6 @@ import os
 
 @bp.route('/<int:product_id>')
 def get_product(product_id):
-    print("got here")
     product = Product.query.get(product_id)
     if product:
         return jsonify({
