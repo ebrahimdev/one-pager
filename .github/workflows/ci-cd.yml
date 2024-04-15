@@ -19,12 +19,15 @@ jobs:
         gpg --list-secret-keys
 
     - name: Import GPG Key
-      env:
-        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       run: |
-        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --import --no-tty --pinentry-mode loopback
-        echo $GPG_PASSPHRASE | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --trust-model always --import
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import --no-tty --pinentry-mode loopback
+        echo "GPG Key import attempted."
 
+    - name: List imported keys
+      run: |
+        gpg --list-keys
+        gpg --list-secret-keys
+        
     - name: Decrypt secrets
       env:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
