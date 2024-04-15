@@ -51,18 +51,6 @@ services:
     volumes:
       - .:/app  # Ensure this is the path to your React source code
       - /app/node_modules  # Use a volume to persist node_modules
-
-  ngrok:
-    image: wernight/ngrok
-    depends_on:
-      - nginx
-    ports:
-      - "4040:4040"
-    command: ngrok http nginx:80
-    environment:
-      NGROK_AUTHTOKEN: ${NGROK_TOKEN}
-    networks:
-      - app_network
   
   nginx:
     image: nginx:alpine
