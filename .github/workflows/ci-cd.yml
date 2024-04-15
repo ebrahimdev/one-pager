@@ -13,28 +13,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Check GPG configuration
-      run: |
-        gpg --list-keys
-        gpg --list-secret-keys
+    - name: List files in the workspace
+      run: ls -la
 
     - name: Import GPG Key
       run: |
         echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import --no-tty --pinentry-mode loopback
-        echo "GPG Key import attempted."
 
-    - name: List imported keys
-      run: |
-        gpg --list-keys
-        gpg --list-secret-keys
-        
-    - name: Decrypt secrets
+    - name: Decrypt .env.prod.secret
       env:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       run: |
-        echo "${GPG_PASSPHRASE}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --decrypt --output .env decrypted_file.gpg
-        if [ ! -f .env ]; then
-          echo ".env file not created, decryption failed."
+        echo "${GPG_PASSPHRASE}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --decrypt --output .env.prod .env.prod.secret
+        if [ ! -f .env.prod ]; then
+          echo ".env.prod file not created, decryption failed."
           exit 1
         fi
 
