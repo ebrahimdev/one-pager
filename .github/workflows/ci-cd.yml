@@ -39,6 +39,7 @@ jobs:
         port: 22
         source: "./*"
         target: "/home/onepager"
+        debug: true
 
     - name: Deploy to server
       uses: appleboy/ssh-action@master
