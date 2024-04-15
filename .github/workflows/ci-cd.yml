@@ -50,4 +50,4 @@ jobs:
         script: |
           cd /home/onepager
           docker-compose down
-          docker-compose up --build -d
+          docker-compose up --env-file .env.prod --build -d
