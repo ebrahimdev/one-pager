@@ -1,72 +1,53 @@
-version: '3.8'
-services:
-  db:
-    image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app_network
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+name: CI/CD Pipeline
 
-  migrate:
-    build: .
-    command: flask db upgrade
-    depends_on:
-      - db
-    networks:
-      - app_network
-    environment:
-      FLASK_APP: app.py
-      FLASK_ENV: ${FLASK_ENV}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-  flask_app:
-    build: .
-    command: /bin/sh -c "while ! nc -z db 5432; do sleep 1; done; python run.py"
-    environment:
-      APP_PORT: 80
-      FLASK_APP: app.py
-      FLASK_ENV: ${FLASK_ENV}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
-    depends_on:
-      - db
-      - migrate
-    networks:
-      - app_network
-    volumes:
-      - .:/usr/src/app
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  react_app:
-    build:
-      context: .
-      dockerfile: ${REACT_DOCKER_FILE}  # Specify the development Dockerfile here
-    environment:
-      - HOST=${REACT_HOST:-}
-      - DANGEROUSLY_DISABLE_HOST_CHECK=${DANGEROUSLY_DISABLE_HOST_CHECK:-false}
-    networks:
-      - app_network
-    volumes:
-      - .:/app  # Ensure this is the path to your React source code
-      - /app/node_modules  # Use a volume to persist node_modules
-  
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"  # Expose Nginx on port 80 of the host
-    depends_on:
-      - flask_app
-      - react_app
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx config
-    networks:
-      - app_network
+    - name: List files in the workspace
+      run: ls -la
 
-networks:
-  app_network:
-    driver: bridge
+    - name: Import GPG Key
+      run: |
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import --no-tty --pinentry-mode loopback
 
-volumes:
-  postgres_data:
+    - name: Decrypt .env.prod.secret
+      env:
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      run: |
+        echo "${GPG_PASSPHRASE}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --decrypt --output .env.prod .env.prod.secret
+        if [ ! -f .env.prod ]; then
+          echo ".env.prod file not created, decryption failed."
+          exit 1
+        fi
+
+    - name: Copy files to the server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        source: "./*"
+        target: "/home/onepager"
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /home/onepager
+          docker-compose down
+          docker-compose up --build -d
