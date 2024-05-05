@@ -33,7 +33,7 @@ jobs:
     - name: copy file via ssh key
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.HOST }}
+        host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.USERNAME }}
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
