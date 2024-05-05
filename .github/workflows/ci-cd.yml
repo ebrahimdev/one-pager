@@ -33,12 +33,12 @@ jobs:
     - name: copy file via ssh key
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: '45.76.61.43'
-        username: onepageruser
-        password: Khareghush1369
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.USERNAME }}
         port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./"
-        target: /home/onepageruser
+        target: /home/onepageruser/
 
 
     - name: Deploy to server
