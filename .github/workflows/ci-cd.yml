@@ -33,9 +33,9 @@ jobs:
     - name: copy file via ssh key
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASS }}
+        host: 45.76.61.43
+        username: onepageruser
+        password: Khareghush1369
         port: 22
         source: "./"
         target: /home/onepager/
