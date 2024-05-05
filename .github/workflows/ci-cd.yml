@@ -38,8 +38,9 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          scp -r -o StrictHostKeyChecking=no ./ ${{{ secrets.SERVER_USER }}}@${{ secrets.SERVER_IP }}:/home/onepager/
-          
+          scp -r -o StrictHostKeyChecking=no ./ ${{{ secrets.SERVER_USER }}}@${{{ secrets.SERVER_IP }}}:/home/onepager/
+
+
     - name: Deploy to server
       uses: appleboy/ssh-action@master
       with:
