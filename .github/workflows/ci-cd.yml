@@ -30,16 +30,15 @@ jobs:
           exit 1
         fi
 
-    - name: Sync files to the server
-      uses: appleboy/ssh-action@master
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
         port: 22
-        script: |
-          scp -r -o StrictHostKeyChecking=no ./ ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}}:/home/onepager/
-
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: ./
+        target: /home/onepager/
 
 
     - name: Deploy to server
