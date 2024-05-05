@@ -38,7 +38,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ /home/onepager/
+          rsync -avz -e "ssh -o" ./ /home/onepager/
 
 
     - name: Deploy to server
