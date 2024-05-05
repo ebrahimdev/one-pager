@@ -38,7 +38,7 @@ jobs:
         password: Khareghush1369
         port: 22
         source: "./"
-        target: /home/onepager/
+        target: /home/onepageruser/onepager
 
 
     - name: Deploy to server
