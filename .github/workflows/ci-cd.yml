@@ -37,8 +37,8 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          rsync -avz -e "ssh -o" ./ /home/onepageruser/onepager
+        source: "./"
+        target: "/home/onepageruser/onepager"
 
 
     - name: Deploy to server
