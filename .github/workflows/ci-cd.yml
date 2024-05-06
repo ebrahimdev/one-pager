@@ -31,7 +31,7 @@ jobs:
         fi
 
     - name: Sync files to the server
-      uses: actions/checkout@v4
+      uses: actions/scp-action@v0.1.7
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
