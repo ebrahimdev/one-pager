@@ -38,7 +38,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "./"
-        target: "/home/onepageruser/onepager"
+        target: "./"
 
 
     - name: Deploy to server
