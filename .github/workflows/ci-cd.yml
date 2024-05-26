@@ -51,4 +51,5 @@ jobs:
         script: |
           cd ~
           docker-compose down
-          docker-compose up --env-file .env.prod --build -d
+          cp .env.prod .env
+          docker-compose up --build -d
